@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App.tsx";
 
 const rootElem = document.createElement("div");
-rootElem.id = "react-root";
+rootElem.id = "react";
 
 document.body.appendChild(rootElem);
 
