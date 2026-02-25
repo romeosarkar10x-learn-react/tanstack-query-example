@@ -32,30 +32,41 @@ async function getTime(context: QueryFunctionContext<["app"]>) {
     }
 
     const time = new Date(timeInt);
+
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 2000));
     return time;
 }
 
 export default function ServerTime() {
-    const q = useQuery({
+    const query = useQuery({
         queryKey: ["app"],
         queryFn: getTime,
+        // staleTime: 2000,
+        // refetchInterval: 2000,
     });
 
-    if (q.isPending) {
+    if (query.isPending) {
+        return <p>Pending...</p>;
+    }
+
+    if (query.isLoading) {
         return <p>Loading...</p>;
     }
 
-    if (q.isError) {
-        return <p>Error: {q.error.message}</p>;
+    if (query.isError) {
+        return <p>Error: {query.error.message}</p>;
     }
 
     return (
         <p>
-            {q.data.toLocaleString(undefined, {
+            {query.data.toLocaleString(undefined, {
                 dateStyle: "full",
                 timeStyle: "full",
             })}{" "}
-            [ Server time ]
+            [ Server time ]{" "}
+            <button disabled={query.isFetching || query.isRefetching} onClick={() => query.refetch()}>
+                Reload
+            </button>
         </p>
     );
 }
