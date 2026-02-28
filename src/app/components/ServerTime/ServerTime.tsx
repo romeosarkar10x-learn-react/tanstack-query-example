@@ -1,4 +1,5 @@
 import { type QueryFunctionContext, useQuery } from "@tanstack/react-query";
+import Button from "../Button";
 
 async function getTime(context: QueryFunctionContext<["app"]>) {
     console.log("getTime:", context);
@@ -64,9 +65,9 @@ export default function ServerTime() {
                 timeStyle: "full",
             })}{" "}
             [ Server time ]{" "}
-            <button disabled={query.isFetching || query.isRefetching} onClick={() => query.refetch()}>
+            <Button disabled={query.isFetching || query.isRefetching} onClick={() => query.refetch()}>
                 Reload
-            </button>
+            </Button>
         </p>
     );
 }
